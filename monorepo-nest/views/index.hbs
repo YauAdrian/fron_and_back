@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>No funciona AHHHHHH AYudaaa</title>
+ <!-- <link rel="stylesheet" href="../styles/style.css">-->
+ <link rel="stylesheet" href="../styles/style.css">
+ 
+</head>
+<script>
+    async function consultarUsuario(event) {
+      event.preventDefault(); 
+      
+      const correo = document.getElementById('correo').value;
+      const response = await fetch(`http://localhost:3000/consultar?correo=${correo}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = ''; 
+        
+        if (data.length > 0) {
+          data.forEach(usuario => {
+            const userDiv = document.createElement('div');
+            userDiv.textContent = `ID: ${usuario.id}, Nombre: ${usuario.nombre}`;
+            resultDiv.appendChild(userDiv);
+          });
+        } else {
+          resultDiv.textContent = 'No se encontraron usuarios con ese correo.';
+        }
+      } else {
+        alert('Error al realizar la consulta');
+      }
+    }
+  </script>
+<body>
+  <body style="background-color:#1150e2;"></body>
+<h1 > Vivan Las chivas</h1>
+<h4>Adrian Ortiz Yau </h4>
+  <form action="/agregar" method="post" class="formulario">
+    <input type="text" name="nombre" placeholder="NOMBRE" required>
+    <input type="email" name="correo" placeholder="CORREO ELECTRONICO" required>
+    <button type="submit">Enviar</button>
+  </form>
+     <h1 class="container">Consultar Usuario</h1>
+  <form onsubmit="consultarUsuario(event)" method="get" class="formulario">
+    <label for="correo">Correo:</label>
+    <input type="email" id="correo" name="correo" required>
+    <button type="submit">Consultar</button>
+  </form>
+  <div class="container" id="result"> </div>
+</body>
+</html>
